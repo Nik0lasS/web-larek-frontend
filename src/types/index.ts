@@ -18,9 +18,6 @@ export interface IOrder {
 
 // по факту могут не понадобиться в дальнейшем, были выведены
 // во время анализа используемых данных по макетам
-export type TProductMainInfo = Pick<IProduct, 'category' | 'title' | 'image' | 'price'>;
-export type TProductFullInfo = Omit<IProduct, 'id'>;
-export type TProductShortInfo = Pick<IProduct, 'title' | 'price'>;
 export type TOrderAddressInfo = Pick<IOrder, 'payment' | 'address'>;
 export type TOrderContactInfo = Pick<IOrder, 'email' | 'phone'>;
 export type TOrderFieldsInfo = TOrderAddressInfo & TOrderContactInfo;
