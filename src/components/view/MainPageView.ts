@@ -2,11 +2,21 @@ import { Component } from '../base/component';
 import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 
-export class MainPageView extends Component {
-    protected _cartCounter: HTMLSpanElement;
-    protected _cartButton: HTMLButtonElement;
-    protected _mainPageWrapper: HTMLDivElement;
-    protected _gallery: HTMLElement;
+interface IMainPageView {
+    _cartCounter: HTMLSpanElement,
+    _cartButton: HTMLButtonElement,
+    _mainPageWrapper: HTMLDivElement,
+    _gallery: HTMLElement,
+    setProducts(elements: HTMLElement[]): void,
+    setCartCounter(value: number): void,
+    toggleLocked(): void,
+}
+
+export class MainPageView extends Component implements IMainPageView {
+    private readonly _cartCounter: HTMLSpanElement;
+    private readonly _cartButton: HTMLButtonElement;
+    private readonly _mainPageWrapper: HTMLDivElement;
+    private readonly _gallery: HTMLElement;
 
 
     constructor(events: IEvents) {

@@ -2,14 +2,31 @@ import { IEvents } from '../base/events';
 import { Component } from '../base/component';
 import { ensureElement } from '../../utils/utils';
 
-export class ProductView extends Component {
-    protected _title: HTMLHeadingElement;
-    protected _category: HTMLSpanElement;
-    protected _image: HTMLImageElement;
-    protected _price: HTMLSpanElement;
-    protected _description: HTMLParagraphElement;
-    protected _index: HTMLSpanElement;
-    protected _actionButton: HTMLButtonElement;
+interface IProductView {
+    _title: HTMLHeadingElement,
+    _category: HTMLSpanElement,
+    _image: HTMLImageElement,
+    _price: HTMLSpanElement,
+    _description: HTMLParagraphElement,
+    _index: HTMLSpanElement,
+    _actionButton: HTMLButtonElement,
+    setTitle(value: string): void,
+    setCategory(value: string): void,
+    setImageComponentContent(value: string): void,
+    setPrice(value: string): void,
+    setDescription(value: string): void,
+    setIndex(value: number): void,
+    setActionButtonTextContent(value: string): void,
+}
+
+export class ProductView extends Component implements IProductView{
+    private readonly _title: HTMLHeadingElement;
+    private readonly _category: HTMLSpanElement;
+    private readonly _image: HTMLImageElement;
+    private readonly _price: HTMLSpanElement;
+    private readonly _description: HTMLParagraphElement;
+    private readonly _index: HTMLSpanElement;
+    private readonly _actionButton: HTMLButtonElement;
 
     constructor(
         container: HTMLElement,

@@ -5,8 +5,8 @@ export abstract class Component<T extends object = object> {
 
   }
   // добавить или удалить класс у HTML-элемента
-  toggleClass(element: HTMLElement, className: string) {
-      element.classList.toggle(className);
+  toggleClass(element: HTMLElement, className: string, force?: boolean) {
+      element.classList.toggle(className, force);
   }
   // Установить текстовое содержимое HTML-элемента
   protected setText(element: HTMLElement, value: unknown) {
