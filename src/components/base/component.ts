@@ -1,4 +1,4 @@
-import { IEvents } from '../base/events';
+import { IEvents } from './events';
 
 export abstract class Component<T extends object = object> {
   protected constructor(protected readonly _container: HTMLElement, protected _events: IEvents) {
@@ -9,7 +9,7 @@ export abstract class Component<T extends object = object> {
       element.classList.toggle(className);
   }
   // Установить текстовое содержимое HTML-элемента
-  protected setTextСontent(element: HTMLElement, value: unknown) {
+  protected setText(element: HTMLElement, value: unknown) {
       if (element) {
           element.textContent = String(value);
       }
