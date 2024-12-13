@@ -50,7 +50,7 @@ export interface ICartData {
 }
 
 // Аналог Partial<T>, но любое значение из T может быть null
-type OrNullValue<T extends object> = {
+export type OrNullValue<T extends object> = {
   [P in keyof T]?: T[P] | null;
 };
 
@@ -58,7 +58,7 @@ export interface IOrderData {
   _data: OrNullValue<IOrder>,
   _errors: Record<keyof TOrderFieldsInfo, string>,
   // для работы с ошибками
-  validateFormFields(values: OrNullValue<TOrderFieldsInfo>): boolean,
+  validateFormFields(values: OrNullValue<TOrderFieldsInfo>): void,
   setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void,
   deleteFieldError(fieldName: keyof TOrderFieldsInfo): void,
   getErrors(): Record<keyof TOrderFieldsInfo, string>,
@@ -76,4 +76,5 @@ export interface IOrderData {
   setTotalCost(value: IOrder['total'] | null): void,
   // общий метод очистки данных заказа
   clearOrderData(): void,
+  getOrderData(): OrNullValue<IOrder>,
 }

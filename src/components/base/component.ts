@@ -1,5 +1,8 @@
-export abstract class Component<T extends object> {
-  protected constructor(protected readonly container: HTMLElement) {
+import { IEvents } from '../base/events';
+
+export abstract class Component<T extends object = object> {
+  protected constructor(protected readonly _container: HTMLElement, protected _events: IEvents) {
+
   }
   // добавить или удалить класс у HTML-элемента
   toggleClass(element: HTMLElement, className: string) {
@@ -38,6 +41,6 @@ export abstract class Component<T extends object> {
   // Отрендерить HTML-элемент
   render(data?: Partial<T>): HTMLElement {
       Object.assign(this as object, data ?? {});
-      return this.container;
+      return this._container;
   }
 }
