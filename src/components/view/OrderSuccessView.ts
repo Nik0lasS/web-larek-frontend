@@ -3,8 +3,6 @@ import { ensureElement } from '../../utils/utils';
 import { Component } from '../base/component';
 
 interface IOrderSuccessView {
-    _totalPrice: HTMLParagraphElement,
-    _actionButton: HTMLButtonElement
     setTotalPrice(price: number): void,
 }
 

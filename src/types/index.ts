@@ -23,8 +23,6 @@ export type TOrderContactInfo = Pick<IOrder, 'email' | 'phone'>;
 export type TOrderFieldsInfo = TOrderAddressInfo & TOrderContactInfo;
 
 export interface IProductsData {
-  _products: IProduct[],
-  _previewId: IProduct['id'] | null,
   // для работы с продуктами
   setProducts(products: IProduct[]): void,
   getProducts(): IProduct[],
@@ -35,7 +33,6 @@ export interface IProductsData {
 }
 
 export interface ICartData {
-  _cartItems: IProduct[],
   // для изменения массива содержимого корзины
   clearCart(): void,
   addCartItem(product: IProduct): void,
@@ -55,8 +52,6 @@ export type OrNullValue<T extends object> = {
 };
 
 export interface IOrderData {
-  _data: OrNullValue<IOrder>,
-  _errors: Record<keyof TOrderFieldsInfo, string>,
   // для работы с ошибками
   validateFormFields(values: OrNullValue<TOrderFieldsInfo>): void,
   setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void,

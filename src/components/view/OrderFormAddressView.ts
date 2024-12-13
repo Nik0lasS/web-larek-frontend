@@ -4,9 +4,6 @@ import { OrderFormView } from './OrderFormView';
 import { IOrder } from '../../types';
 
 interface IOrderFormAddressView {
-    _cardButton: HTMLButtonElement,
-    _cashButton: HTMLButtonElement,
-    _addressInput: HTMLInputElement,
     togglePaymentButton(btnName: IOrder['payment']): void
 }
 

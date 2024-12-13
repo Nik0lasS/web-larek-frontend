@@ -3,13 +3,6 @@ import { Component } from '../base/component';
 import { ensureElement } from '../../utils/utils';
 
 interface IProductView {
-    _title: HTMLHeadingElement,
-    _category: HTMLSpanElement,
-    _image: HTMLImageElement,
-    _price: HTMLSpanElement,
-    _description: HTMLParagraphElement,
-    _index: HTMLSpanElement,
-    _actionButton: HTMLButtonElement,
     setTitle(value: string): void,
     setCategory(value: string): void,
     setImageComponentContent(value: string): void,
@@ -39,12 +32,17 @@ export class ProductView extends Component implements IProductView{
         super(container, events);
 
         this._title = ensureElement<HTMLHeadingElement>('.card__title', container);
-        this._category = ensureElement<HTMLSpanElement>('.card__category', container);
-        this._image = ensureElement<HTMLImageElement>('.card__image', container);
         this._price = ensureElement<HTMLSpanElement>('.card__price', container);
-        this._description = ensureElement<HTMLParagraphElement>('.card__text', container);
-        this._index = ensureElement<HTMLSpanElement>('.basket__item-index', container);
-        this._actionButton = ensureElement<HTMLButtonElement>('.card__button', container);
+
+        // не в каждом представлении продукта есть эти элементы, а ensureElement
+        // может выбрасывать ошибку
+        try {
+            this._category = ensureElement<HTMLSpanElement>('.card__category', container);
+            this._image = ensureElement<HTMLImageElement>('.card__image', container);
+            this._description = ensureElement<HTMLParagraphElement>('.card__text', container);
+            this._index = ensureElement<HTMLSpanElement>('.basket__item-index', container);
+            this._actionButton = ensureElement<HTMLButtonElement>('.card__button', container);
+        } catch { /* empty */ }    
 
         if (eventsProcessors?.onProductClick) {
             container.addEventListener('click', eventsProcessors.onProductClick);

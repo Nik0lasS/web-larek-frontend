@@ -95,8 +95,6 @@ type OrNullValue<T extends object> = {
 Интерфейс для модели данных товаров
 ```ts
 interface IProductsData {
-    _products: IProduct[],
-    _previewId: IProduct['id'] | null,
     // для работы с товарами
     setProducts(products: IProduct[]): void,
     getProducts(): IProduct[],
@@ -110,7 +108,6 @@ interface IProductsData {
 Интерфейс для модели данных корзины
 ```ts
 interface ICartData {
-    _cartItems: IProduct[],
     // для изменения массива содержимого корзины
     clearCart(): void,
     addCartItem(product: IProduct): void,
@@ -127,8 +124,6 @@ interface ICartData {
 Интерфейс для модели данных формы
 ```ts
 interface IOrderData {
-    _data: OrNullValue<IOrder>,
-    _errors: Record<keyof TOrderFieldsInfo, string>,
     // для работы с ошибками
     validateFormFields(values: OrNullValue<TOrderFieldsInfo>):  void,
     setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void,

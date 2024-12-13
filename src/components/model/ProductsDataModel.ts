@@ -1,7 +1,7 @@
 import { IEvents } from '../base/events';
 import { IProduct, IProductsData } from '../../types';
 
-export class IProductsDataModel implements IProductsData{
+export class ProductsDataModel implements IProductsData{
     protected _products: IProduct[] = [];
     protected _previewId: IProduct['id'] | null = null;
 

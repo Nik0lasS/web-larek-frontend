@@ -2,15 +2,7 @@ import { Component } from '../base/component';
 import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 
-interface IOrderFormView {
-    _errors: HTMLSpanElement,
-    _submitButton: HTMLButtonElement,
-    setMakeNextButtonState(state: boolean): void,
-    onFieldChange(name: string, value: string | null): void,
-    setErrors(errors?: string | number): void,
-}
-
-export abstract class OrderFormView extends Component implements IOrderFormView {
+export abstract class OrderFormView extends Component {
     protected readonly _errors: HTMLSpanElement;
     protected readonly _submitButton: HTMLButtonElement;
 

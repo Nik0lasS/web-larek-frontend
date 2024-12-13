@@ -1,15 +1,18 @@
 import { Api, ApiListResponse } from './base/api';
 import { IOrder, IProduct } from '../types';
 
-export class LarekApi extends Api {
-    readonly _cdnUrl: string;
+interface ILarekApi {
+    getProductsInfo(): Promise<ApiListResponse<IProduct>>,
+    makeOrder(order: IOrder): Promise<{ id: string, total: number}>,
+}
 
-    constructor(baseUrl: string, cdnUrl: string, options?: RequestInit) {
+export class LarekApi extends Api implements ILarekApi {
+
+    constructor(baseUrl: string, private readonly _cdnUrl: string, options?: RequestInit) {
         super(baseUrl, options);
-        this._cdnUrl = cdnUrl;
     }
 
-    getProductsInfo(): Promise<ApiListResponse<IProduct>> {
+    getProductsInfo() {
         return this.get('/product')
             .then((data: ApiListResponse<IProduct>) => {
                 return {
@@ -22,7 +25,8 @@ export class LarekApi extends Api {
             });
     }
 
-    makeOrder(order: IOrder): Promise<{ id: string, total: number}> {
-        return this.post('/order', order);
+    makeOrder(order: IOrder) {
+        return this.post('/order', order)
+            .then((data: { id: string, total: number}) => data);
     }
 }

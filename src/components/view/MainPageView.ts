@@ -3,10 +3,6 @@ import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 
 interface IMainPageView {
-    _cartCounter: HTMLSpanElement,
-    _cartButton: HTMLButtonElement,
-    _mainPageWrapper: HTMLDivElement,
-    _gallery: HTMLElement,
     setProducts(elements: HTMLElement[]): void,
     setCartCounter(value: number): void,
     toggleLocked(): void,

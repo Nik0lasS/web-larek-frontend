@@ -3,8 +3,6 @@ import { Component } from '../base/component';
 import { ensureElement } from '../../utils/utils';
 
 interface IModalView {
-    _contentContainer: HTMLElement,
-    _closeButton: HTMLButtonElement,
     open(): void,
     close(): void,
     setContent(content: HTMLElement): void,

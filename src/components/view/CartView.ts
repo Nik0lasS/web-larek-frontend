@@ -3,9 +3,6 @@ import { Component } from '../base/component';
 import { ensureElement } from '../../utils/utils';
 
 interface ICartView {
-    _cartItems: HTMLUListElement,
-    _totalPrice: HTMLSpanElement,
-    _makeOrderButton: HTMLButtonElement,
     setMakeOrderButtonState(state: boolean): void,
     setTotalPrice(price: number): void,
     setCartItems(items: HTMLElement[]): void,

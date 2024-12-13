@@ -2,12 +2,7 @@ import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 import { OrderFormView } from './OrderFormView';
 
-interface IOrderFormContactView {
-    _emailInput: HTMLInputElement,
-    _phoneInput: HTMLInputElement,
-}
-
-export class OrderFormContactView extends OrderFormView implements IOrderFormContactView {
+export class OrderFormContactView extends OrderFormView {
     private readonly _emailInput: HTMLInputElement;
     private readonly _phoneInput: HTMLInputElement;
 
