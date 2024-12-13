@@ -1,5 +1,6 @@
 import { IEvents } from '../base/events';
 import { IOrder, IOrderData, OrNullValue, TOrderFieldsInfo } from '../../types';
+import { formFieldsNameMap } from '../../utils/constants';
 
 const defaultOrderValues: OrNullValue<IOrder> = {
     payment: null,
@@ -18,8 +19,12 @@ const defaultOrderErrorsValues: Record<keyof TOrderFieldsInfo, string> = {
 };
 
 export class FormDataModel implements IOrderData{
-    protected _data: OrNullValue<IOrder> = defaultOrderValues;
-    protected _errors: Record<keyof TOrderFieldsInfo, string> = defaultOrderErrorsValues;
+    protected _data: OrNullValue<IOrder> = {
+        ...defaultOrderValues,
+    };
+    protected _errors: Record<keyof TOrderFieldsInfo, string> = {
+        ...defaultOrderErrorsValues,
+    };
 
     constructor(protected events: IEvents) {
         this.events = events;
@@ -31,7 +36,7 @@ export class FormDataModel implements IOrderData{
     }
 
     deleteFieldError(fieldName: keyof TOrderFieldsInfo): void {
-        delete this._errors[fieldName];
+        this._errors[fieldName] = '';
     }
 
     getAddressValue(): IOrder['address'] | null {
@@ -82,11 +87,16 @@ export class FormDataModel implements IOrderData{
         this._data.total = value;
     }
 
-    validateFormFields(values: OrNullValue<TOrderFieldsInfo>): void {
-        Object.entries(values).forEach(([key, value]) => {
+    validateFormFields(): void {
+        Object.entries({
+            email: this.getEmailValue(),
+            phone: this.getPhoneValue(),
+            payment: this.getPaymentValue(),
+            address: this.getAddressValue(),
+        }).forEach(([key, value]) => {
             this.setFieldError(
                 key as keyof TOrderFieldsInfo,
-                value ? '' : `Поле ${key} должно быть заполнено`,
+                value ? '' : `Поле ${formFieldsNameMap[key]} должно быть заполнено`,
             );
         });
     }

@@ -20,7 +20,9 @@ export class ModalView extends Component implements IModalView {
 
         this._closeButton.addEventListener(
             'click',
-            () => this._events.emit('modal:close'),
+            () => {
+                this.close();
+            },
         );
 
         container.addEventListener(

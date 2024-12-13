@@ -2,7 +2,12 @@ import { Component } from '../base/component';
 import { IEvents } from '../base/events';
 import { ensureElement } from '../../utils/utils';
 
-export abstract class OrderFormView extends Component {
+interface IOrderFormView {
+    setErrors(errors?: string | number): void,
+    disableNextButton(state: boolean): void,
+}
+
+export abstract class OrderFormView extends Component implements IOrderFormView{
     protected readonly _errors: HTMLSpanElement;
     protected readonly _submitButton: HTMLButtonElement;
 
@@ -13,15 +18,15 @@ export abstract class OrderFormView extends Component {
         this._submitButton = ensureElement<HTMLButtonElement>('button[type=submit]', container);
     }
 
-    protected onFieldChange(name: string, value: string | null): void {
-        this._events.emit('orderForm:input', { name, value });
+    protected onFieldChange(formStep: 'address' | 'contacts', name: string, value: string | null): void {
+        this._events.emit('orderForm:input', {  formStep, name, value });
     }
 
-    protected setErrors(errors?: string | number): void {
+    setErrors(errors?: string | number): void {
         this.setText(this._errors, errors || '');
     }
 
-    protected setMakeNextButtonState(state: boolean): void {
+    disableNextButton(state: boolean): void {
         this.setDisabled(this._submitButton, state);
     }
 }

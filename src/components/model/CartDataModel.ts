@@ -32,7 +32,9 @@ export class CartDataModel implements ICartData {
     }
 
     getCartItemsIds(): Array<IProduct['id']> {
-        return this._cartItems.map(ci => ci.id);
+        return this._cartItems
+            .filter(ci => !!ci.price)
+            .map(ci => ci.id);
     }
 
     getTotalCost(): number {
@@ -49,7 +51,7 @@ export class CartDataModel implements ICartData {
         return !!this._cartItems.find(ci => ci.id === id)
     }
 
-    validateTotalCost(): boolean {
-        return this.getTotalCost() !== 0;
+    isZeroTotalCost(): boolean {
+        return this.getTotalCost() === 0;
     }
 }

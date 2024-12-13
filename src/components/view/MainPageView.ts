@@ -5,7 +5,7 @@ import { ensureElement } from '../../utils/utils';
 interface IMainPageView {
     setProducts(elements: HTMLElement[]): void,
     setCartCounter(value: number): void,
-    toggleLocked(): void,
+    toggleLocked(state: boolean): void,
 }
 
 export class MainPageView extends Component implements IMainPageView {
@@ -36,7 +36,7 @@ export class MainPageView extends Component implements IMainPageView {
         this.setText(this._cartCounter, String(value));
     }
 
-    toggleLocked() {
-        this.toggleClass(this._mainPageWrapper, 'page__wrapper_locked');
+    toggleLocked(state: boolean) {
+        this.toggleClass(this._mainPageWrapper, 'page__wrapper_locked', state);
     }
 }

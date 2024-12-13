@@ -17,7 +17,7 @@ export class OrderSuccessView extends Component implements IOrderSuccessView {
         this._actionButton = ensureElement<HTMLButtonElement>('.order-success__close', container);
 
         this._actionButton.addEventListener('click', () => {
-            this._events.emit('modal:close');
+            this._events.emit('orderFormSuccess:goShopping');
         });
     }
 

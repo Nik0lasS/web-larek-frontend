@@ -43,7 +43,7 @@ export interface ICartData {
   getCartItemsIds(): Array<IProduct['id']>,
   getCartItemsCount(): number,
   getTotalCost(): number,
-  validateTotalCost(): boolean,
+  isZeroTotalCost(): boolean,
 }
 
 // Аналог Partial<T>, но любое значение из T может быть null
@@ -53,7 +53,7 @@ export type OrNullValue<T extends object> = {
 
 export interface IOrderData {
   // для работы с ошибками
-  validateFormFields(values: OrNullValue<TOrderFieldsInfo>): void,
+  validateFormFields(): void,
   setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void,
   deleteFieldError(fieldName: keyof TOrderFieldsInfo): void,
   getErrors(): Record<keyof TOrderFieldsInfo, string>,

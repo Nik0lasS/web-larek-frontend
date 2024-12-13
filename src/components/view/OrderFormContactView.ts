@@ -6,7 +6,7 @@ export class OrderFormContactView extends OrderFormView {
     private readonly _emailInput: HTMLInputElement;
     private readonly _phoneInput: HTMLInputElement;
 
-    constructor(container: HTMLElement, events: IEvents) {
+    constructor(container: HTMLElement, events: IEvents, submitProcessor: () => void) {
         super(container, events);
 
         this._emailInput = ensureElement<HTMLInputElement>('input[name="email"]', container);
@@ -14,12 +14,17 @@ export class OrderFormContactView extends OrderFormView {
 
         this._emailInput.addEventListener('input', (e: Event) => {
             e.preventDefault();
-            this.onFieldChange('email', (e.target as HTMLInputElement).value || null);
+            this.onFieldChange('contacts', 'email', (e.target as HTMLInputElement).value || null);
         });
 
-        this._emailInput.addEventListener('input', (e: Event) => {
+        this._phoneInput.addEventListener('input', (e: Event) => {
             e.preventDefault();
-            this.onFieldChange('phone', (e.target as HTMLInputElement).value || null);
+            this.onFieldChange('contacts', 'phone', (e.target as HTMLInputElement).value || null);
+        });
+
+        this._submitButton.addEventListener('click', (e) => {
+            e.preventDefault();
+            submitProcessor();
         });
     }
 }

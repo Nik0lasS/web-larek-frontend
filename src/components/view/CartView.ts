@@ -3,7 +3,7 @@ import { Component } from '../base/component';
 import { ensureElement } from '../../utils/utils';
 
 interface ICartView {
-    setMakeOrderButtonState(state: boolean): void,
+    disableMakeOrderButtonState(state: boolean): void,
     setTotalPrice(price: number): void,
     setCartItems(items: HTMLElement[]): void,
 }
@@ -22,7 +22,7 @@ export class CartView extends Component implements ICartView {
 
         this._makeOrderButton.addEventListener(
             'click',
-            () => this._events.emit('orderForm:open'),
+            () => this._events.emit('orderFormAddress:open'),
         );
     }
 
@@ -30,11 +30,11 @@ export class CartView extends Component implements ICartView {
         this._cartItems.replaceChildren(...items);
     }
 
-    setMakeOrderButtonState(state: boolean): void {
+    disableMakeOrderButtonState(state: boolean): void {
         this.setDisabled(this._makeOrderButton, state);
     }
 
     setTotalPrice(price: number): void {
-        this.setText(this._totalPrice, price);
+        this.setText(this._totalPrice, `${price} синапсов`);
     }
 }

@@ -1,12 +1,13 @@
 import { IEvents } from '../base/events';
 import { Component } from '../base/component';
 import { ensureElement } from '../../utils/utils';
+import { categoryClassMap } from '../../utils/constants';
 
 interface IProductView {
     setTitle(value: string): void,
     setCategory(value: string): void,
     setImageComponentContent(value: string): void,
-    setPrice(value: string): void,
+    setPrice(value: number | null): void,
     setDescription(value: string): void,
     setIndex(value: number): void,
     setActionButtonTextContent(value: string): void,
@@ -38,9 +39,21 @@ export class ProductView extends Component implements IProductView{
         // может выбрасывать ошибку
         try {
             this._category = ensureElement<HTMLSpanElement>('.card__category', container);
+        } catch { /* empty */ }
+
+        try {
             this._image = ensureElement<HTMLImageElement>('.card__image', container);
+        } catch { /* empty */ }
+
+        try {
             this._description = ensureElement<HTMLParagraphElement>('.card__text', container);
+        } catch { /* empty */ }
+
+        try {    
             this._index = ensureElement<HTMLSpanElement>('.basket__item-index', container);
+        } catch { /* empty */ }
+
+        try {
             this._actionButton = ensureElement<HTMLButtonElement>('.card__button', container);
         } catch { /* empty */ }    
 
@@ -59,14 +72,15 @@ export class ProductView extends Component implements IProductView{
 
     setCategory(value: string) {
         this.setText(this._category, value);
+        this.toggleClass(this._category, categoryClassMap[value], true);
     }
 
     setImageComponentContent(value: string) {
         this.setImage(this._image, value, this._title.textContent || '');
     }
 
-    setPrice(value: string) {
-        this.setText(this._price, value);
+    setPrice(value: number | null) {
+        this.setText(this._price, value !== null ? `${value} синапсов` : 'Бесценно');
     }
 
     setDescription(value: string) {

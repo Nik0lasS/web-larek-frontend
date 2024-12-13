@@ -23,10 +23,7 @@ export class ProductsDataModel implements IProductsData{
 
     setPreviewId(id: IProduct['id'] | null): void {
         this._previewId = id;
-
-        if (id) {
-            this.events.emit<{ id: IProduct['id'] }>('product:select', { id });
-        }
+        this.events.emit('productPreviewId:changed');
     }
 
     setProducts(products: IProduct[]): void {

@@ -117,7 +117,7 @@ interface ICartData {
     getCartItemsIds(): Array<IProduct['id']>,
     getCartItemsCount(): number,
     getTotalCost(): number,
-    validateTotalCost(): boolean,
+    isZeroTotalCost(): boolean,
 }
 ```
 
@@ -125,7 +125,7 @@ interface ICartData {
 ```ts
 interface IOrderData {
     // для работы с ошибками
-    validateFormFields(values: OrNullValue<TOrderFieldsInfo>):  void,
+    validateFormFields():  void,
     setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void,
     deleteFieldError(fieldName: keyof TOrderFieldsInfo): void,
     getErrors(): Record<keyof TOrderFieldsInfo, string>,
@@ -209,12 +209,10 @@ interface IOrderData {
 - _previewId: IProduct['id'] | null - id товара, выбранного для просмотра в модальном окне
 
 Также класс предоставляет набор методов для взаимодействия с этими данными.
-- setProducts(products: IProduct[]): void - заполняет массив товаров, инициирует событие изменения списка товаров,
-доступных для заказа 
+- setProducts(products: IProduct[]): void - заполняет массив товаров, инициирует событие изменения списка товаров, доступных для заказа 
 - getProducts(): IProduct[] - возвращает массив товаров
 - getProductById(id: IProduct['id']): IProduct - возвращает товар по его id
-- setPreviewId(id: IProduct['id'] | null): void - устанавливает id товара для превью, инициирует событие открытия
-модального окна с деталями товара
+- setPreviewId(id: IProduct['id'] | null): void - устанавливает id товара для превью, инициирует событие изменения выбранного товара для просмотра деталей
 - getPreviewId(): IProduct['id'] | null - возвращает id товара, детали которого нужно показать в модальном окне
 
 #### Класс CartDataModel
@@ -234,7 +232,7 @@ interface IOrderData {
 - getCartItemsIds(): Array<IProduct['id']> - возвращает список  id-шников товаров в корзине
 - getCartItemsCount(): number - возвращает кол-во товаров в корзине
 - getTotalCost(): number - возвращает итоговую сумму товаров в корзине
-- validateTotalCost(): boolean - проверяет валидность (неравенство нулю) итоговой сумму товаров в корзине, в случае
+- isZeroTotalCost(): boolean - проверяет валидность (неравенство нулю) итоговой сумму товаров в корзине, в случае
 невалидности инициирует событие блокирования кнопки оформления заказа
 
 #### Класс FormDataModel
@@ -247,10 +245,9 @@ interface IOrderData {
 - _errors: Record<keyof TOrderFieldsInfo, string> - объект с ошибками полей формы заказа
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
-- validateFormFields(values: OrNullValue<TOrderFieldsInfo>): boolean - проверяет валидность (заполненность) полей формы
+- validateFormFields(): boolean - проверяет валидность (заполненность) полей формы
 заказа, в случае невалидности инициирует событие с текстами ошибок конкретных полей
-- setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void - устанавливает текст ошибки конкретного поля
-формы заказа
+- setFieldError(fieldName: keyof TOrderFieldsInfo, error: string): void - устанавливает текст ошибки конкретного поля формы заказа
 - deleteFieldError(fieldName: keyof TOrderFieldsInfo): void - очищает ошибку конкретного поля формы заказа
 - getErrors(): Record<keyof TOrderFieldsInfo, string> - возвращает объект с ошибками полей формы заказа
 - getPaymentValue(): IOrder['payment'] | null - возвращает значение поля "Тип платежа"
@@ -283,7 +280,7 @@ interface IOrderData {
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 - setProducts(elements: HTMLElement[]): void - наполняет контейнер списка товаров содержимым
 - setCartCounter(value: number): void - изменяет значение счетчика товаров в корзине
-- toggleLocked(): void - блок/разблок основного интерфейса при открытой/закрытой модалке
+- toggleLocked(state: boolean): void - блок/разблок основного интерфейса при открытой/закрытой модалке
 
 #### Класс ProductView
 Универсальный класс, отвечает за отображение товара
@@ -315,7 +312,7 @@ interface IOrderData {
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 - сеттеры для полей корзины
-- setMakeOrderButtonState(state: boolean): void - блокирует/разблокирует кнопку оформления заказа в зависимости
+- disableMakeOrderButtonState(state: boolean): void - блокирует/разблокирует кнопку оформления заказа в зависимости
 от валидности общей стоимости товаров в корзине
 
 #### Класс ModalView
@@ -343,8 +340,8 @@ interface IOrderData {
 
 Так же класс предоставляет набор методов для взаимодействия с этими данными.
 - сеттеры для полей модалки
-- setMakeNextButtonState(state: boolean): void - блокирует/разблокирует кнопку перехода к следующему этапу заполнения формы заказа в зависимости от валидности введенных данных на текущем этапе
-- onFieldChange(name: string, value: string | null): void - в зависимости от изменяемого поля генерирует соответствующее событие
+- disableNextButton(state: boolean): void - блокирует/разблокирует кнопку перехода к следующему этапу заполнения формы заказа в зависимости от валидности введенных данных на текущем этапе
+- onFieldChange(formStep: 'address' | 'contacts', name: string, value: string | null): void - в зависимости от изменяемого поля генерирует соответствующее событие
 
 #### Класс OrderFormAddressView
 Расширяет класс OrderFormView, отвечает за отображение формы на этапе заполнения адреса и типа доставки, установку
@@ -388,19 +385,19 @@ interface IOrderData {
 *Список всех событий, которые могут генерироваться в системе:*\
 *События изменения данных (генерируются классами моделей данных)*
 - `products:changed` - изменение массива товаров
+- `productPreviewId:changed` - изменение выбранного для предпросмотра товара
 - `cart:changed` - изменение массива позиций корзины
-- `order:changed` - изменение данных формы заказа
 
 *События, возникающие при взаимодействии пользователя с интерфейсом (генерируются классами, отвечающими за представление)*
-- `product:select` - выбор товара для просмотра деталей
 - `product:addToCart` - добавление товара в корзину
 - `product:removeFromCart` - удаление товара из корзины
 - `modal:open` - открытие модального окна
 - `modal:close` - закрытие модального окна
 - `cart:open` - просмотр содержимого корзины
 - `cart:close` - закрытие просмотра содержимого корзины
-- `orderForm:open` - открытие формы оформления заказа (на нужном шаге)
+- `orderFormAdress:open` - открытие формы оформления заказа (на первом шаге)
+- `orderFormContacts:open` - открытие формы оформления заказа (на втором шаге)
 - `orderForm:close` - закрытие формы оформления заказа
 - `orderForm:input` - изменение одного из полей ввода в форме заказа
 - `orderForm:submit` - оформление заказа
-- `orderForm:success` - успешное оформление заказа
+- `orderFormSuccess:goShopping` - нажатие на кнопку "За новыми покупками!"
